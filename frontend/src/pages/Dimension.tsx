@@ -10,5 +10,10 @@ export default function DimensionPage() {
     btn?.addEventListener('click', handler)
     return () => btn?.removeEventListener('click', handler)
   }, [navigate])
-  return <div dangerouslySetInnerHTML={{ __html: content }} />
+  return (
+    <div
+      className="bg-gray-100 flex h-screen overflow-hidden text-lg font-sans"
+      dangerouslySetInnerHTML={{ __html: content }}
+    />
+  )
 }
