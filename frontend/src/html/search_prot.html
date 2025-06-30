@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>類似図面検索</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style>
+    .nav-item-label {
+      transition: opacity 0.2s ease-in-out;
+    }
+    #sidebar:not(:hover) .nav-item-label.expanded-only,
+    #sidebar.w-16 .nav-item-label.expanded-only {
+      opacity: 0;
+      pointer-events: none;}
+    #sidebar:hover .nav-item-label.expanded-only,
+    #sidebar.w-64 .nav-item-label.expanded-only {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex h-screen overflow-hidden text-lg">
+    <aside id="sidebar" class="w-16 bg-blue-700 text-white p-4 space-y-6 h-full flex flex-col justify-between transition-all duration-200 ease-in-out cursor-pointer" onclick="toggleSidebar()">
+      <div>
+        <!-- <div class="flex items-center space-x-2 mb-10">
+          <span class="material-icons text-3xl">memory</span>
+          <span class="text-xl font-semibold hidden" id="logo-text">ズーメン</span>
+        </div> -->
+        <nav class="space-y-4">
+          <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+            <span class="material-icons">home</span>
+            <span class="nav-item-label hidden expanded-only">ホーム</span>
+          </a>
+          <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 bg-blue-800 transition-colors" href="#">
+            <span class="material-icons">search</span>
+            <span class="nav-item-label hidden expanded-only">類似図面検索</span>
+          </a>
+          <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+            <span class="material-icons">folder_open</span>
+            <span class="nav-item-label hidden expanded-only">図面管理</span>
+          </a>
+          <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+            <span class="material-icons">settings</span>
+            <span class="nav-item-label hidden expanded-only">設定</span>
+          </a>
+        </nav>
+      </div>
+<div class="space-y-2">
+<div class="flex items-center space-x-3 p-2">
+<span class="material-icons">account_circle</span>
+<span class="nav-item-label hidden expanded-only text-sm" id="company-name">株式会社デモ</span>
+</div>
+<a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+<span class="material-icons">logout</span>
+<span class="nav-item-label hidden expanded-only">ログアウト</span>
+</a>
+</div>
+</aside>
+<main class="flex-1 p-6 overflow-y-auto">
+<header class="flex justify-between items-center mb-8">
+<div>
+<h1 class="text-3xl font-semibold text-gray-800">類似図面検索</h1>
+<p class="text-gray-600">図面名: フランジA / 図面番号: BC2024-00006</p>
+</div>
+<div class="flex items-center space-x-4">
+<span class="text-gray-600">全て30件 1ページ目 (12件)</span>
+<div class="flex items-center space-x-2">
+<label class="text-gray-600" for="sort">並び順:</label>
+<select class="bg-white border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" id="sort" name="sort">
+<option>類似度順</option>
+<option>更新日順</option>
+<option>図面番号順</option>
+</select>
+</div>
+</div>
+</header>
+<div class="flex space-x-6">
+<div class="w-2/5 bg-white p-6 rounded-lg shadow">
+<div class="flex justify-between items-center mb-4">
+<div class="flex space-x-2">
+<button class="p-2 text-gray-600 hover:text-blue-600 rounded-full hover:bg-gray-100 transition-colors">
+<span class="material-icons">download</span>
+</button>
+<button class="p-2 text-gray-600 hover:text-blue-600 rounded-full hover:bg-gray-100 transition-colors">
+<span class="material-icons">share</span>
+</button>
+<button class="p-2 text-gray-600 hover:text-blue-600 rounded-full hover:bg-gray-100 transition-colors">
+<span class="material-icons">settings</span>
+</button>
+</div>
+<div class="flex items-center">
+<span class="text-sm font-medium text-gray-700 mr-2">詳細</span>
+<button class="text-gray-500 hover:text-gray-700">
+<span class="material-icons">close</span>
+</button>
+</div>
+</div>
+<div class="border rounded-md overflow-hidden mb-4">
+<img alt="フランジAの図面" class="w-full max-h-96 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJeKuj775GjOerM-uOmBEF-l7XLYi_Jmet4jKjsitquWc9O2zP7uPD-f0friMLikWD6k3Q2EvghrwcdmSRznFIYnIIpLuY3pb900JYfYMC5jJbz_E8TUALuw6ZOtPf_lPuEEWfgon1DXouipQNXgRTcpdx2YKq6kZTURW-MAhlEHCU95iWCxk2jnJyX6Dn9SZ5GthsEbYAA4xf8-S8JM5YOT1mCU-EQsGwQ2omc1p8z_eJbhNjnGkXsPB82EllPqNP25LG1KflXxM"/>
+</div>
+<div class="flex justify-end mb-6">
+<button class="p-2 text-gray-600 hover:text-blue-600 rounded-full hover:bg-gray-100 transition-colors">
+<span class="material-icons">fullscreen</span> 全画面
+          </button>
+</div>
+<h2 class="text-xl font-semibold text-gray-800 mb-3">情報</h2>
+<div class="space-y-2 text-sm text-gray-700">
+<div class="flex justify-between"><span>ファイルタイプ</span><span>図面</span></div>
+<div class="flex justify-between"><span>図面名</span><span>フランジA</span></div>
+<div class="flex justify-between"><span>図面番号</span><span>BC2024-00006</span></div>
+<div class="flex justify-between"><span>案件名</span><span>2024 高周波電気製作所</span></div>
+</div>
+</div>
+<div class="w-3/5">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+<div class="flex justify-between items-center mb-2">
+<div class="flex items-center text-orange-500">
+<span class="material-icons text-sm">local_fire_department</span>
+<span class="text-xs font-medium">類似度：96%</span>
+</div>
+<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" type="checkbox"/>
+</div>
+<div class="border rounded-md overflow-hidden mb-3">
+<img alt="類似図面Cのサムネイル" class="w-full h-32 object-contain bg-gray-50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqszBnfHGRmUiNZpJ-Ph-Iviw1gbZu3oIuY9gw0slgLCr_Xi5LisX2vEJOqgPtFde4OZCOpVKnxs5OXbgF9Ff3-EGPKT4Vl54c0NxySM-4mBaBhPM5C8g3rshOPbVJ4Gzn2i4JvZeU9x0-MAT-hwFnWiOWyAi6GkmsFeki-0a1ShTChp-kwmE_cUlybH7jw5DLVJxIiXfNuoEzzKDk3zR2g-wiMTz4_IymxZ6E-_IeJgINzG2xdKp4FyiiSfOyU8cydQ1av5XvAkw"/>
+</div>
+<h3 class="text-sm font-semibold text-gray-800 truncate" title="2024_高周波電気製作所様_熱交換器部品建屋">2024_高周波電気製作所様_熱交換器部品建屋</h3>
+<p class="text-xs text-gray-600">フランジC</p>
+<p class="text-xs text-gray-800 font-medium">BC2024-00013</p>
+<p class="text-xs text-gray-500 mt-1 text-right">2024/7/15</p>
+</div>
+<div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+<div class="flex justify-between items-center mb-2">
+<div class="flex items-center text-orange-400">
+<span class="material-icons text-sm">local_fire_department</span>
+<span class="text-xs font-medium">類似度：80%</span>
+</div>
+<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" type="checkbox"/>
+</div>
+<div class="border rounded-md overflow-hidden mb-3">
+<img alt="類似図面Dのサムネイル" class="w-full h-32 object-contain bg-gray-50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZxnItlBYCGPXIlBqZECYQSl909assEcFR5EYvuZolKpZgRi12rfjegXVK2tZdRe6cPcdpFVv-PIj0VAlXIBw7-qbCIXFxFGJVGTMcGDqQBMow7OwmXjzLf3ezkZmHpwClYW7fm1c6q2vmvHaMqp9i0-80kEPe05belRZz7tgojJcPPnNY8t7XGRY8z8qSqJiljPGw6fbekNe-LN3V4odNGvRXgri4p3H31qsSfvfg1OBztNYjJn7pOIhu3jusqcg6PWBXA_6L8vY"/>
+</div>
+<h3 class="text-sm font-semibold text-gray-800 truncate" title="2024_高周波電気製作所様_熱交換器部品建屋">2024_高周波電気製作所様_熱交換器部品建屋</h3>
+<p class="text-xs text-gray-600">フランジD</p>
+<p class="text-xs text-gray-800 font-medium">BC2024-00014</p>
+<p class="text-xs text-gray-500 mt-1 text-right">2024/7/15</p>
+</div>
+<div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+<div class="flex justify-between items-center mb-2">
+<div class="flex items-center text-orange-400">
+<span class="material-icons text-sm">local_fire_department</span>
+<span class="text-xs font-medium">類似度：77%</span>
+</div>
+<input class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" type="checkbox"/>
+</div>
+<div class="border rounded-md overflow-hidden mb-3">
+<img alt="類似図面D 皿穴無しのサムネイル" class="w-full h-32 object-contain bg-gray-50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeUmG07q-pJbKnfYIWsVrTC6RDVnYO-wVtcC3qW4P1lxdtuwcqAeilEjU5UQ1CHHwj58m-XXlQJfri-HrCpVcwhKV0KvJp_iWRne5w9WfPSuin6ayVp8wJ6KUetZfDSFVZ_6GJGi39O4xkEv77kOw4GR-vfNhTkLchtd72p1R09NCY_9oooIssilqfBl0sWApZr2WWwKokSlonnWBOjJxwY7kVLEj1LhSIyJ6mAFTfm_ksuET0BNT3o-s8yGtl7IZjwifCMzYTyJY"/>
+</div>
+<h3 class="text-sm font-semibold text-gray-800 truncate" title="2024_高周波電気製作所様_熱交換器部品建屋">2024_高周波電気製作所様_熱交換器部品建屋</h3>
+<p class="text-xs text-gray-600">フランジD_皿穴無し_...</p>
+<p class="text-xs text-gray-800 font-medium">BC2024-00014</p>
+<p class="text-xs text-gray-500 mt-1 text-right">2024/7/15</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+  <!-- 決定ボタン -->
+  <div class="fixed bottom-4 right-4">
+    <button id="confirm-button" disabled class="flex items-center space-x-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+      <span class="material-icons">check_circle</span>
+      <span>決定</span>
+    </button>
+  </div>
+
+</body></html>

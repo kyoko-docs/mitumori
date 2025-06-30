@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>外形寸法選択</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+  <style>
+      .nav-item-label {
+        transition: opacity 0.2s ease-in-out;
+      }
+      #sidebar:not(:hover) .nav-item-label.expanded-only,
+      #sidebar.w-16 .nav-item-label.expanded-only {
+        opacity: 0;
+        pointer-events: none;}
+      #sidebar:hover .nav-item-label.expanded-only,
+      #sidebar.w-64 .nav-item-label.expanded-only {
+        opacity: 1;
+      }
+    </style>
+  </head>
+<body class="bg-gray-100 flex h-screen overflow-hidden text-lg font-sans">
+    <aside id="sidebar" class="w-16 bg-blue-700 text-white p-4 space-y-6 h-full flex flex-col justify-between transition-all duration-200 ease-in-out cursor-pointer" onclick="toggleSidebar()">
+        <div>
+          <!-- <div class="flex items-center space-x-2 mb-10">
+            <span class="material-icons text-3xl">memory</span>
+            <span class="text-xl font-semibold hidden" id="logo-text">ズーメン</span>
+          </div> -->
+          <nav class="space-y-4">
+            <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+              <span class="material-icons">home</span>
+              <span class="nav-item-label hidden expanded-only">ホーム</span>
+            </a>
+            <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 bg-blue-800 transition-colors" href="#">
+              <span class="material-icons">search</span>
+              <span class="nav-item-label hidden expanded-only">類似図面検索</span>
+            </a>
+            <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+              <span class="material-icons">folder_open</span>
+              <span class="nav-item-label hidden expanded-only">図面管理</span>
+            </a>
+            <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+              <span class="material-icons">settings</span>
+              <span class="nav-item-label hidden expanded-only">設定</span>
+            </a>
+          </nav>
+        </div>
+  <div class="space-y-2">
+  <div class="flex items-center space-x-3 p-2">
+  <span class="material-icons">account_circle</span>
+  <span class="nav-item-label hidden expanded-only text-sm" id="company-name">株式会社デモ</span>
+  </div>
+  <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+  <span class="material-icons">logout</span>
+  <span class="nav-item-label hidden expanded-only">ログアウト</span>
+  </a>
+  </div>
+  </aside>
+
+  <div class="flex flex-1 flex-col">
+    <!-- ヘッダー -->
+    <header class="flex items-center justify-between bg-white shadow p-4">
+      <button id="backButton" class="flex items-center text-gray-600 hover:text-gray-800">
+        <span class="material-icons">arrow_back</span>
+        <span class="ml-2 text-lg font-medium">外形寸法選択</span>
+      </button>
+      <div class="text-gray-500 text-sm">最終更新日: 2025/06/09</div>
+    </header>
+
+    <!-- メイン領域 -->
+    <main class="flex-1 overflow-y-auto p-6">
+      <div class="flex flex-col lg:flex-row lg:space-x-8">
+        <!-- 左カラム -->
+        <div class="lg:w-2/3 bg-white rounded-lg shadow p-6 mb-8 lg:mb-0">
+          <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
+            <!-- 図面プレビュー画像 -->
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJeKuj775GjOerM-uOmBEF-l7XLYi_Jmet4jKjsitquWc9O2zP7uPD-f0friMLikWD6k3Q2EvghrwcdmSRznFIYnIIpLuY3pb900JYfYMC5jJbz_E8TUALuw6ZOtPf_lPuEEWfgon1DXouipQNXgRTcpdx2YKq6kZTURW-MAhlEHCU95iWCxk2jnJyX6Dn9SZ5GthsEbYAA4xf8-S8JM5YOT1mCU-EQsGwQ2omc1p8z_eJbhNjnGkXsPB82EllPqNP25LG1KflXxM" alt="図面プレビュー" class="max-h-full" />
+          </div>
+          <p class="mt-4 text-gray-600">外形寸法プレビュー</p>
+        </div>
+
+        <!-- 右カラム -->
+        <div class="lg:w-1/3 bg-white rounded-lg shadow p-6 space-y-6">
+          <div>
+            <label class="block text-gray-700 mb-1">外径（φ）<span class="text-gray-500 ml-1">mm</span></label>
+            <input type="text" class="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500" placeholder="例: 100" value="124"/>
+            <p class="mt-1 text-xs text-gray-500">±0.1mmまで設定可能</p>
+          </div>
+          <div>
+            <label class="block text-gray-700 mb-1">内径（φ）<span class="text-gray-500 ml-1">mm</span></label>
+            <input type="text" class="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500" placeholder="例: 50" value="50"/>
+            <p class="mt-1 text-xs text-gray-500">±0.1mmまで設定可能</p>
+          </div>
+          <div>
+            <label class="block text-gray-700 mb-1">厚さ（t）<span class="text-gray-500 ml-1">mm</span></label>
+            <input type="text" class="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500" placeholder="例: 5" value="25"/>
+            <p class="mt-1 text-xs text-gray-500">±0.1mmまで設定可能</p>
+          </div>
+          <div>
+            <label class="block text-gray-700 mb-1">長さ（L）<span class="text-gray-500 ml-1">mm</span></label>
+            <input type="text" class="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500" placeholder="例: 200" value="50"/>
+            <p class="mt-1 text-xs text-gray-500">±0.1mmまで設定可能</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- フッター：サイドバーにかぶらないようにfixedをやめ、flexレイアウト内で下部に配置 -->
+    <footer class="flex items-center justify-between bg-white shadow p-4 mt-auto">
+        <button id="cancelButton" class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">キャンセル</button>
+        <button id="confirmButton" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">決定</button>
+      </footer>
+    </div>
+
+  <!-- 共通サイドバー開閉スクリプトを流用 -->
