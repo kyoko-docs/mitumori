@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Web見積アプリプロトタイプ</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<style>
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga';
+  }
+</style>
+<style>
+  .nav-item-label {
+    transition: opacity 0.2s ease-in-out;
+  }
+  /* 閉じた時: nav 内のみラベルを非表示 */
+  #sidebar:not(:hover) nav .nav-item-label.expanded-only,
+  #sidebar.w-16 nav .nav-item-label.expanded-only {
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* 開いた時: nav 内のみホバーでラベル表示 */
+  #sidebar:hover nav .nav-item-label.expanded-only,
+  #sidebar.w-64 nav .nav-item-label.expanded-only {
+    opacity: 1;
+    pointer-events: auto;
+  }
+</style>
+</head>
+<body class="bg-gray-100 flex h-screen overflow-hidden text-lg">
+  <aside id="sidebar" class="w-64 bg-blue-700 text-white p-6 space-y-6 h-full flex flex-col justify-between transition-all duration-200 ease-in-out cursor-pointer" onclick="toggleSidebar()">
+    <div>
+      <!-- <div class="flex items-center space-x-2 mb-10">
+        <span class="material-icons text-3xl">memory</span>
+        <span class="text-xl font-semibold inline" id="logo-text">ABC</span>
+      </div> -->
+      <nav class="space-y-4">
+        <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+          <span class="material-icons">home</span>
+          <span class="nav-item-label inline expanded-only">ホーム</span>
+        </a>
+        <a class="flex items-center space-x-3 py-2 px-2 rounded-lg bg-blue-800 hover:bg-blue-600 transition-colors" href="#">
+          <span class="material-icons">search</span>
+          <span class="nav-item-label inline expanded-only">類似図面検索</span>
+        </a>
+        <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+          <span class="material-icons">folder_open</span>
+          <span class="nav-item-label inline expanded-only">図面管理</span>
+        </a>
+        <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+          <span class="material-icons">settings</span>
+          <span class="nav-item-label inline expanded-only">設定</span>
+        </a>
+      </nav>
+    </div>
+    <div class="space-y-2">
+      <div class="flex items-center space-x-3 p-2">
+        <span class="material-icons">account_circle</span>
+        <span id="company-name" class="nav-item-label inline expanded-only text-sm">株式会社デモ</span>
+      </div>
+      <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+        <span class="material-icons">logout</span>
+        <span id="logout-label" class="nav-item-label inline expanded-only">ログアウト</span>
+      </a>
+    </div>
+  </aside>
+  <main class="flex-1 p-6 overflow-y-auto">
+
+    <header class="flex items-center justify-between mb-8">
+      <!-- 左：戻るボタン＋製品名 -->
+      <div class="flex items-center space-x-3">
+        <button class="text-gray-600 hover:text-gray-800">
+          <span class="material-icons text-3xl">arrow_back_ios</span>
+        </button>
+        <h1 class="text-2xl font-bold text-gray-800">フランジA</h1>
+      </div>
+      <!-- 中央：会社名 -->
+  <div class="flex-1 text-center">
+    <span class="text-lg font-medium text-gray-800">株式会社ABC工業</span>
+  </div>
+
+  <!-- 右：更新日＋ステータスセレクト -->
+  <div class="flex items-center space-x-4">
+    <span class="text-sm text-gray-500">最終更新日: 2023/11/17</span>
+    <div class="relative">
+      <select
+        class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-md leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
+      >
+        <option>加工前</option>
+        <option>加工中</option>
+        <option>完了</option>
+      </select>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+        <span class="material-icons">arrow_drop_down</span>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="grid grid-cols-3 gap-8">
+<div class="col-span-2 bg-white p-6 rounded-lg shadow">
+<nav class="mb-6 border-b border-gray-200">
+<ul class="flex space-x-8 text-sm font-medium text-gray-500">
+<li><a class="pb-3 border-b-2 border-blue-500 text-blue-600" href="#">図面</a></li>
+<li><a class="pb-3 hover:text-blue-600 hover:border-blue-500" href="#">見積書</a></li>
+<li><a class="pb-3 hover:text-blue-600 hover:border-blue-500" href="#">生産工程</a></li>
+<li><a class="pb-3 hover:text-blue-600 hover:border-blue-500" href="#">検査成績書</a></li>
+<li><a class="pb-3 hover:text-blue-600 hover:border-blue-500" href="#">部品版本</a></li>
+<li><a class="pb-3 hover:text-blue-600 hover:border-blue-500" href="#">不具合管理</a></li>
+</ul>
+</nav>
+<div class="mb-6">
+<div class="flex space-x-4 overflow-x-auto pb-4">
+<div class="flex-shrink-0 w-32 h-24 border-2 border-blue-500 rounded-md flex flex-col items-center justify-center text-blue-500 bg-blue-50 p-2">
+<span class="material-icons">picture_as_pdf</span>
+<span class="text-xs mt-1 truncate w-full text-center">フランジA.pdf</span>
+<span class="text-xs text-gray-400">2023/11/01</span>
+</div>
+<div class="flex-shrink-0 w-32 h-24 border border-gray-300 rounded-md flex flex-col items-center justify-center text-gray-500 hover:border-blue-400 hover:bg-gray-50 p-2">
+<span class="material-icons">insert_drive_file</span>
+<span class="text-xs mt-1 truncate w-full text-center">検査成績書.xlsx</span>
+<span class="text-xs text-gray-400">2023/11/03</span>
+</div>
+<div class="flex-shrink-0 w-32 h-24 border border-gray-300 rounded-md flex flex-col items-center justify-center text-gray-500 hover:border-blue-400 hover:bg-gray-50 p-2">
+<span class="material-icons">insert_drive_file</span>
+<span class="text-xs mt-1 truncate w-full text-center">見積書.pdf</span>
+<span class="text-xs text-gray-400">2023/11/03</span>
+</div>
+<div class="flex-shrink-0 w-32 h-24 border border-gray-300 rounded-md flex flex-col items-center justify-center text-gray-500 hover:border-blue-400 hover:bg-gray-50 p-2">
+<span class="material-icons">insert_drive_file</span>
+<span class="text-xs mt-1 truncate w-full text-center">工程図.pdf</span>
+<span class="text-xs text-gray-400">2023/11/05</span>
+</div>
+<div class="flex-shrink-0 w-32 h-24 border border-gray-300 rounded-md flex flex-col items-center justify-center text-gray-500 hover:border-blue-400 hover:bg-gray-50 p-2">
+<span class="material-icons">add_photo_alternate</span>
+<span class="text-xs mt-1 truncate w-full text-center">チェックJPG</span>
+<span class="text-xs text-gray-400">2023/11/08</span>
+</div>
+</div>
+</div>
+<div class="border border-gray-200 rounded-md p-4 mb-6">
+<img alt="Technical drawing of a flange" class="w-full max-h-96 object-contain rounded-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJeKuj775GjOerM-uOmBEF-l7XLYi_Jmet4jKjsitquWc9O2zP7uPD-f0friMLikWD6k3Q2EvghrwcdmSRznFIYnIIpLuY3pb900JYfYMC5jJbz_E8TUALuw6ZOtPf_lPuEEWfgon1DXouipQNXgRTcpdx2YKq6kZTURW-MAhlEHCU95iWCxk2jnJyX6Dn9SZ5GthsEbYAA4xf8-S8JM5YOT1mCU-EQsGwQ2omc1p8z_eJbhNjnGkXsPB82EllPqNP25LG1KflXxM"/>
+</div>
+<div class="flex justify-end space-x-3">
+<button class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 transition-colors">
+<span class="material-icons">delete</span>
+<span>削除</span>
+</button>
+<button class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+<span class="material-icons">search</span>
+<span>類似図面検索</span>
+</button>
+</div>
+</div>
+<div class="col-span-1 bg-white p-6 rounded-lg shadow space-y-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">品番</label>
+<input class="w-full p-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" type="text" value="1234-SA-789"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">製品名</label>
+<input class="w-full p-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" type="text" value="フランジA"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">顧客名</label>
+<input class="w-full p-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" type="text" value="株式会社ABC工業"/>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<label class="block text-sm font-medium text-gray-700">材質</label>
+<button class="text-xs text-blue-600 hover:text-blue-800 flex items-center">
+<span class="material-icons text-sm mr-1">add_circle_outline</span>追加
+            </button>
+</div>
+<input class="w-full p-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" readonly="" type="text" value="S45C"/>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<label class="block text-sm font-medium text-gray-700">加工方法</label>
+<button class="text-xs text-blue-600 hover:text-blue-800 flex items-center">
+<span class="material-icons text-sm mr-1">add_circle_outline</span>追加
+            </button>
+</div>
+<input class="w-full p-2 border border-gray-300 rounded-md mb-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" readonly="" type="text" value="マシニング"/>
+<input class="w-full p-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" readonly="" type="text" value="旋盤"/>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<label class="block text-sm font-medium text-gray-700">機械</label>
+<button class="text-xs text-blue-600 hover:text-blue-800 flex items-center">
+<span class="material-icons text-sm mr-1">add_circle_outline</span>追加
+            </button>
+</div>
+<input class="w-full p-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" readonly="" type="text" value="FB80 マシニングセンタ"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">メモ</label>
+<textarea class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="11/18 エアブローで叩いてから、セットアップすること。" rows="3">11/18 エアブローで叩いてから、セットアップすること。</textarea>
+</div>
+</div>
+</div>
+</main>
+
+</body></html>

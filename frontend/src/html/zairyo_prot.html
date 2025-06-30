@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>材料費</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+  <style>
+    .nav-item-label {
+      transition: opacity 0.2s ease-in-out;
+    }
+    #sidebar:not(:hover) .nav-item-label.expanded-only,
+    #sidebar.w-16 .nav-item-label.expanded-only {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #sidebar:hover .nav-item-label.expanded-only,
+    #sidebar.w-64 .nav-item-label.expanded-only {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex h-screen overflow-hidden text-lg font-sans">
+  <!-- サイドバー -->
+  <aside id="sidebar" class="w-16 bg-blue-700 text-white p-4 space-y-6 h-full flex flex-col justify-between transition-all duration-200 ease-in-out cursor-pointer" onclick="toggleSidebar()">
+    <div>
+      <nav class="space-y-4">
+        <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+          <span class="material-icons">home</span>
+          <span class="nav-item-label hidden expanded-only">ホーム</span>
+        </a>
+        <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 bg-blue-800 transition-colors" href="#">
+          <span class="material-icons">search</span>
+          <span class="nav-item-label hidden expanded-only">類似図面検索</span>
+        </a>
+        <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+          <span class="material-icons">folder_open</span>
+          <span class="nav-item-label hidden expanded-only">図面管理</span>
+        </a>
+        <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+          <span class="material-icons">settings</span>
+          <span class="nav-item-label hidden expanded-only">設定</span>
+        </a>
+      </nav>
+    </div>
+    <div class="space-y-2">
+      <div class="flex items-center space-x-3 p-2">
+        <span class="material-icons">account_circle</span>
+        <span class="nav-item-label hidden expanded-only text-sm" id="company-name">株式会社デモ</span>
+      </div>
+      <a class="flex items-center space-x-3 py-2 px-2 rounded-lg hover:bg-blue-600 transition-colors" href="#">
+        <span class="material-icons">logout</span>
+        <span class="nav-item-label hidden expanded-only">ログアウト</span>
+      </a>
+    </div>
+  </aside>
+
+  <div class="flex flex-1 flex-col">
+    <!-- ヘッダー -->
+    <header class="flex items-center justify-between bg-white shadow p-4">
+      <button id="backButton" class="flex items-center text-gray-600 hover:text-gray-800">
+        <span class="material-icons">arrow_back</span>
+        <span class="ml-2 text-lg font-medium">材料費</span>
+      </button>
+      <div class="text-gray-500 text-sm">最終更新日: 2025/06/09</div>
+    </header>
+
+    <!-- メイン領域 -->
+    <main class="flex-1 overflow-y-auto p-6">
+      <div class="bg-white rounded-lg shadow p-6">
+        <!-- 見積明細テーブル -->
+        <div class="overflow-x-auto">
+          <table class="min-w-full table-auto text-left">
+            <thead>
+              <tr class="bg-gray-50">
+                <th class="px-4 py-2">No.</th>
+                <th class="px-4 py-2">図面ID</th>
+                <th class="px-4 py-2">製品名</th>
+                <th class="px-4 py-2">金額(円)</th>
+                <th class="px-4 py-2">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 動的に行を追加 -->
+              <tr>
+                <td class="border px-4 py-2">1</td>
+                <td class="border px-4 py-2">
+                  <input type="text" class="w-full border border-gray-300 rounded-md p-1 focus:ring-blue-500" value="" />
+                </td>
+                <td class="border px-4 py-2">
+                  <input type="text" class="w-full border border-gray-300 rounded-md p-1 focus:ring-blue-500" value="" />
+                </td>
+                <td class="border px-4 py-2">
+                  <input type="text" class="w-full border border-gray-300 rounded-md p-1 focus:ring-blue-500" value="" />
+                </td>
+                <td class="border px-4 py-2 text-center">
+                  <button class="text-red-500 hover:text-red-700 material-icons">delete</button>
+                </td>
+              </tr>
+            </tbody>
+            <!-- フッター（合計不要であれば丸ごと削除してください） -->
+            <!--
+            <tfoot>
+              <tr class="bg-gray-100">
+                <td colspan="4" class="text-right px-4 py-2 font-semibold">合計</td>
+                <td class="px-4 py-2 font-semibold">0</td>
+                <td></td>
+              </tr>
+            </tfoot>
+            -->
+          </table>
+        </div>
+        <!-- 行追加ボタン -->
+        <div class="mt-4">
+          <button id="addRow" class="flex items-center px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+            <span class="material-icons">add</span>
+            <span class="ml-1">行を追加</span>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- フッター -->
+    <footer class="flex items-center justify-between bg-white shadow p-4 mt-auto">
+      <button id="cancelButton" class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">戻る</button>
+      <button id="exportButton" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">次へ</button>
+    </footer>
+  </div>
+
+  <!-- 共通サイドバー開閉スクリプト -->
+</body>
+</html>
