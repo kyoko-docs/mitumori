@@ -128,7 +128,7 @@
         <div class="lg:w-1/3 bg-white rounded-lg shadow p-6 space-y-6">
           <div>
             <label class="block text-gray-700 mb-1">レポートタイトル</label>
-            <input type="text" list="report-title-list"
+            <input id="report-title-input" type="text" list="report-title-list"
                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500"
                    placeholder="自動生成レポート"/>
             <datalist id="report-title-list">
@@ -139,7 +139,7 @@
           </div>
           <div>
             <label class="block text-gray-700 mb-1">宛先メールアドレス</label>
-            <input type="email" list="email-address-list"
+            <input id="email-address-input" type="email" list="email-address-list"
                    class="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500"
                    placeholder="example@example.com"/>
             <datalist id="email-address-list">
@@ -202,6 +202,16 @@
       companyName.classList.toggle('hidden');
       companyName.classList.toggle('inline');
     }
+  </script>
+  <script>
+    document.getElementById('report-title-input').addEventListener('focus', () => {
+      const input = document.getElementById('report-title-input');
+      if (input.showPicker) input.showPicker();
+    });
+    document.getElementById('email-address-input').addEventListener('focus', () => {
+      const input = document.getElementById('email-address-input');
+      if (input.showPicker) input.showPicker();
+    });
   </script>
 </body>
 </html>
